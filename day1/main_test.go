@@ -10,47 +10,54 @@ func TestReadFile(t *testing.T) {
 	}
 }
 
-func TestConvertToNums(t *testing.T) {
-	ints := ConvertToNums("12", "35")
-	n1 := ints[0]
-	n2 := ints[1]
-	g1, g2 := 12, 35
-
-	if g1 != n1 || g2 != n2 {
-		t.Errorf("Converting numbers, got n1 %v n1 %v, want n1 %v n2 %v", g1, g2, n1, n2)
+func CompareSlices(t *testing.T, got, want []int) {
+	t.Helper()
+	for _, n := range got {
+		found := false
+		for _, w := range want {
+			if n == w {
+				found = true
+			}
+		}
+		if !found {
+			t.Errorf("Could not find the right number: %v", n)
+		}
 	}
 }
 
-func TestFindTwoNumbersFor(t *testing.T) {
+func TestConvertToNums(t *testing.T) {
+	test := []string{"20", "30", "40", "1", "69"}
+	want := []int{20, 30, 40, 1, 69}
+	got := ConvertStringsToInts(test)
+	CompareSlices(t, got, want)
+}
 
-	compareSlices := func(t *testing.T, got, want []int) {
-		t.Helper()
-		for _, n := range got {
-			found := false
-			for _, w := range want {
-				if n == w {
-					found = true
-				}
-			}
-			if !found {
-				t.Errorf("Could not find the right number: %v", n)
-			}
-		}
-	}
-	numbers := []string{"1721", "979", "366", "299", "675", "1456"}
+func TestFindTwoNumbersFor(t *testing.T) {
+	numbers := []int{1721, 979, 366, 299, 675, 1456}
 
 	t.Run("Two Numbers", func(t *testing.T) {
 		got := FindTwoNumbersFor(2020, numbers)
 		want := []int{1721, 299}
-		compareSlices(t, got, want)
+		CompareSlices(t, got, want)
+	})
+
+	t.Run("Two Nums, no matches shows empty slice", func(t *testing.T) {
+		got := FindTwoNumbersFor(69, numbers)
+		want := []int{}
+		CompareSlices(t, got, want)
 	})
 
 	t.Run("Three Numbers", func(t *testing.T) {
 		got := FindThreeNumbersFor(2020, numbers)
 		want := []int{979, 366, 675}
-		compareSlices(t, got, want)
+		CompareSlices(t, got, want)
 	})
 
+	t.Run("Three Nums, no matches shows empy slice", func(t *testing.T) {
+		got := FindThreeNumbersFor(23, numbers)
+		want := []int{}
+		CompareSlices(t, got, want)
+	})
 }
 
 func TestReduceInts(t *testing.T) {
@@ -63,5 +70,11 @@ func TestReduceInts(t *testing.T) {
 
 	if got != want {
 		t.Errorf("Reducing Ints, got %v want %v", got, want)
+	}
+}
+
+func BenchmarkFindNumbers(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		FindThreeNumbersFor(2020, ConvertStringsToInts(ReadInput()))
 	}
 }
