@@ -1,4 +1,4 @@
-// Package main provides a function to Valid Passports
+// Package main provides functions to Validate Passports
 package main
 
 import (
@@ -57,6 +57,15 @@ type Passport struct {
 type Height struct {
 	value int
 	unit  string
+}
+
+func main() {
+	input := ReadInput("day4/data.txt")
+	partOne, partTwo := ValidatePassports(input)
+	// Part One => 260
+	fmt.Printf("Valid passports (Part one): %v\n", partOne)
+	// Part Two => 153
+	fmt.Printf("Valid passports (Part two): %v\n", partTwo)
 }
 
 // ParsePassport returns a Passport struct with fields parsed
@@ -171,13 +180,4 @@ func ValidatePassports(s []string) (int, int) {
 		}
 	}
 	return invalidPassportsOne, invalidPassportsTwo
-}
-
-func main() {
-	input := ReadInput("day4/data.txt")
-	partOne, partTwo := ValidatePassports(input)
-	// Part One => 260
-	fmt.Printf("Valid passports (Part one): %v\n", partOne)
-	// Part Two => 153
-	fmt.Printf("Valid passports (Part two): %v\n", partTwo)
 }
