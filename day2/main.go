@@ -97,7 +97,7 @@ func ParsePassword(s string) Password {
 	}
 
 	// Password literal to return
-	pwd := Password{
+	return Password{
 		Policy{
 			min,
 			max,
@@ -105,5 +105,4 @@ func ParsePassword(s string) Password {
 		},
 		match[3],
 	}
-	return pwd
 }
