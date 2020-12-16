@@ -33,11 +33,6 @@ func main() {
 	fmt.Printf("Product of the number of trees encountered: %v\n", ReduceInts(treesFound, getProduct, 1))
 }
 
-// IsATree takes a string and returns true if it is aTree
-func IsATree(s string) bool {
-	return s == aTree
-}
-
 // ReadInput parses puzzle input into a slice of strings
 func ReadInput(s string) []string {
 	data, err := ioutil.ReadFile(s)
@@ -52,21 +47,20 @@ func CheckTobogganRow(s string, x int) bool {
 	if x >= len(s) {
 		log.Fatalf("tried to index past string length")
 	}
-	return IsATree(string(s[x]))
+	return string(s[x]) == aTree
 }
 
 // DoTobogganRun performs a simulated run down the mountain, returning the number of tree found
 func DoTobogganRun(s []string, slope *Slope) int {
 	// pos: current col position
-	pos, rowLength, treesFound := 0, len(s[0]), 0
-	for i := 0; i < len(s); i += slope.y {
-		found := CheckTobogganRow(s[i], pos)
-		if found {
+	treesFound := 0
+	for i, pos := 0, 0; i < len(s); i += slope.y {
+		if found := CheckTobogganRow(s[i], pos); found {
 			treesFound++
 		}
 		// update position for next row
 		pos += slope.x
-		if pos >= rowLength {
+		if rowLength := len(s[i]); pos >= rowLength {
 			pos -= rowLength
 		}
 	}

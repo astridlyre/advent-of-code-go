@@ -39,9 +39,7 @@ func (p *Password) isValidTwo() bool {
 	}
 	// Get chars at each policy position
 	l, p1, p2 := p.policy.letter, string(p.value[p.policy.min-1]), string(p.value[p.policy.max-1])
-	if p1 == l && p2 != l {
-		return true
-	} else if p1 != l && p2 == l {
+	if p1 == l && p2 != l || p1 != l && p2 == l {
 		return true
 	}
 	return false

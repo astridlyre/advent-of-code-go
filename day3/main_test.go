@@ -63,28 +63,6 @@ func TestSlope(t *testing.T) {
 	})
 }
 
-func TestIsATree(t *testing.T) {
-	t.Run("IsATree returns true if it's a tree", func(t *testing.T) {
-		myTree := "#"
-		got := IsATree(myTree)
-		want := true
-
-		if got != want {
-			t.Errorf("Testing IsATree: got %v, want %v", got, want)
-		}
-	})
-
-	t.Run("IsATree returns false if it's not a tree", func(t *testing.T) {
-		notATree := "."
-		got := IsATree(notATree)
-		want := false
-
-		if got != want {
-			t.Errorf("Testing IsATree: got %v, want %v", got, want)
-		}
-	})
-}
-
 func TestCheckTobogganRow(t *testing.T) {
 	t.Run("Test that row find a tree at a local where there is a tree", func(t *testing.T) {
 		row := testInput[0]
